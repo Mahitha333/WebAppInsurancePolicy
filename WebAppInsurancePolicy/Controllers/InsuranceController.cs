@@ -50,6 +50,17 @@ namespace WebAppInsurancePolicy.Controllers
             return Ok(policies);
         }
 
+
+
+        [HttpGet("soldbymonth")]
+        public IActionResult GetPoliciesSoldByMonth()
+        {
+            var res = service.GetPoliciesSoldByMonth();
+            return Ok(res);
+
+        }
+
+
         [HttpGet("policies/customer/{customerName}")]
         public ActionResult<IEnumerable<Policy>> GetPoliciesByCustomerName(string customerName)
         {
@@ -67,7 +78,7 @@ namespace WebAppInsurancePolicy.Controllers
         //    return NoContent();
         //}
 
-        [HttpPost("customers")]
+        [HttpPost("Addcustomers")]
         public IActionResult AddCustomer(PolicyHolder newCustomer)
         {
             var result = service.AddCust(newCustomer);
@@ -77,14 +88,12 @@ namespace WebAppInsurancePolicy.Controllers
 
         }
 
-        [HttpPut("customers/{customerId}")]
-        public ActionResult UpdateCustomerDetails(int customerId, [FromBody] PolicyHolder updtaedCustomer)
+        [HttpPut("update")]
+        public IActionResult UpdateCustomerDetails(PolicyHolder policyHolder)
         {
-            if (!service.UpdateCustomerDetails( customerId, updtaedCustomer))
-            {
-                return NotFound();
-            }
-            return NoContent();
+            bool result = service.UpdateCustomerDetails(policyHolder);
+            if (result == true) return Ok();
+            else return NotFound();
         }
 
 
@@ -99,10 +108,10 @@ namespace WebAppInsurancePolicy.Controllers
 
         }
 
-        [HttpDelete("admin/Delete")]
-        public IActionResult DeleteCustomer()
-        {
+        //[HttpDelete("admin/Delete")]
+        //public IActionResult DeleteCustomer()
+        //{
 
-        }
+        //}
     }
 }

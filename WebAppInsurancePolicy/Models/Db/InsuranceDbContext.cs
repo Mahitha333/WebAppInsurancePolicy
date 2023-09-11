@@ -23,6 +23,8 @@ public partial class InsuranceDbContext : DbContext
 
     public virtual DbSet<PolicySold> PolicySolds { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=InsuranceDb;Integrated Security=true;TrustServerCertificate=true");
@@ -84,6 +86,11 @@ public partial class InsuranceDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(30)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.PolicyHolderNavigation).WithOne(p => p.PolicyHolder)
+                .HasForeignKey<PolicyHolder>(d => d.PolicyHolderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__PolicyHol__Polic__49C3F6B7");
         });
 
         modelBuilder.Entity<PolicySold>(entity =>
@@ -105,6 +112,22 @@ public partial class InsuranceDbContext : DbContext
             entity.HasOne(d => d.Policy).WithMany(p => p.PolicySolds)
                 .HasForeignKey(d => d.PolicyId)
                 .HasConstraintName("FK__PolicySol__Polic__3D5E1FD2");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4CC1CB45B6");
+
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("password");
+            entity.Property(e => e.Role)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

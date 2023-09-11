@@ -19,5 +19,7 @@ public partial class PolicyHolder
 
     public string? Address { get; set; }
 
+    public virtual User PolicyHolderNavigation { get; set; } = null!;
+
     public virtual ICollection<PolicySold> PolicySolds { get; set; } = new List<PolicySold>();
 }

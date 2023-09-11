@@ -9,13 +9,13 @@ public partial class PolicySold
 
     public int? PolicyId { get; set; }
 
-    public int PolicyHolderId { get; set; }
+    public int? PolicyHolderId { get; set; }
 
     public string? PolicyName { get; set; }
 
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public virtual Policy? Policy { get; set; }
 
